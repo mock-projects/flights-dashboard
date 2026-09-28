@@ -35,6 +35,8 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 								<th scope='col'>Airline</th>
 								<th scope='col'>Origin</th>
 								<th scope='col'>Destination</th>
+								<th scope='col'>Origin Gate</th>
+								<th scope='col'>Destination Gate</th>
 								<th scope='col'>Current Departure</th>
 								<th scope='col'>Current Arrival</th>
 								<th scope='col'>Status</th>
@@ -50,6 +52,8 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 									<td>{flight.airline}</td>
 									<td>{flight.origin_code}</td>
 									<td>{flight.destination_code}</td>
+									<td>{flight.origin_gate}</td>
+									<td>{flight.destination_gate}</td>
 									<td>{getTimeString(flight.current_departure_time)}</td>
 									<td>{getTimeString(flight.current_arrival_time)}</td>
 									<td>{flight.flight_status}</td>
