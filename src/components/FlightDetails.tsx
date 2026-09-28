@@ -10,6 +10,42 @@ interface FlightDetailsProps {
 	onBackClick: ( ) => void
 }
 
+const FlightSummary = ({flight}: {flight: Flight}) => {
+	return (
+		<FlightCard title={'Flight Summary'}>
+			<p>Airline: {flight.airline}</p>
+
+			<p>
+				Departure Time: {getTimeString(flight.current_departure_time)}
+				{flight.flight_status === 'Delayed' && (
+					<span>
+						{' '}
+						(was {getTimeString(flight.scheduled_departure_time)})
+					</span>
+				)}
+			</p>
+
+			<p>
+				Arrival Time:{' '}
+
+				{flight.flight_status === 'Cancelled'
+					? '-'
+					: getTimeString(flight.current_arrival_time)}
+
+				{flight.flight_status === 'Delayed' && (
+					<span>
+						{' '}
+						(was {getTimeString(flight.scheduled_arrival_time)})
+					</span>
+				)}
+			</p>
+
+			<p>Flight Status: {flight.flight_status}</p>
+			<p>Flight Duration: {getFlightDurationString(flight.flight_duration)}</p>
+		</FlightCard>
+	)
+}
+
 const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 	return (
 		<div className='flight-details'>
@@ -28,37 +64,7 @@ const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 			</header>
 
 			<div className='flight-details-body'>
-				<FlightCard title='Flight Summary'>
-					<p>Airline: {flight.airline}</p>
-
-					<p>
-						Departure Time: {getTimeString(flight.current_departure_time)}
-						{flight.flight_status === 'Delayed' && (
-							<span>
-								{' '}
-								(was {getTimeString(flight.scheduled_departure_time)})
-							</span>
-						)}
-					</p>
-
-					<p>
-						Arrival Time:{' '}
-
-						{flight.flight_status === 'Cancelled'
-							? '-'
-							: getTimeString(flight.current_arrival_time)}
-
-						{flight.flight_status === 'Delayed' && (
-							<span>
-								{' '}
-								(was {getTimeString(flight.scheduled_arrival_time)})
-							</span>
-						)}
-					</p>
-
-					<p>Flight Status: {flight.flight_status}</p>
-					<p>Flight Duration: {getFlightDurationString(flight.flight_duration)}</p>
-				</FlightCard>
+				<FlightSummary flight={flight} />
 			</div>
 		</div>
 	)
