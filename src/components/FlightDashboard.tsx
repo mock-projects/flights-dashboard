@@ -1,7 +1,7 @@
 import {Fragment, useEffect, useState} from 'react'
 import type {Flight} from '../types/flight.d.mts'
 import {fetchFlightResults} from '../utilities/fetchResults.mts'
-import {getTimeString} from '../utilities/flightUtils.mts'
+import {getFlightStatuses, getTimeString} from '../utilities/flightUtils.mts'
 import {Header} from './Header.tsx'
 
 interface FlightDashboardProps {
@@ -43,22 +43,25 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 							</tr>
 						</thead>
 						<tbody>
-							{flights.map((flight) => (
-								<tr
-									key={flight.flight_id}
-									onClick={( ) => (setSelectedFlight(flight))}
-								>
-									<td>{flight.flight_number}</td>
-									<td>{flight.airline}</td>
-									<td>{flight.origin_code}</td>
-									<td>{flight.destination_code}</td>
-									<td>{flight.origin_gate}</td>
-									<td>{flight.destination_gate}</td>
-									<td>{getTimeString(flight.current_departure_time)}</td>
-									<td>{getTimeString(flight.current_arrival_time)}</td>
-									<td>{flight.flight_status}</td>
-								</tr>
-							))}
+							{flights.map((flight) => {
+								const flightStatuses = getFlightStatuses(flight)
+								return (
+									<tr
+										key={flight.flight_id}
+										onClick={( ) => setSelectedFlight(flight)}
+									>
+										<td>{flight.flight_number}</td>
+										<td>{flight.airline}</td>
+										<td>{flight.origin_code}</td>
+										<td>{flight.destination_code}</td>
+										<td>{flight.origin_gate}</td>
+										<td>{flight.destination_gate}</td>
+										<td>{getTimeString(flight.current_departure_time)}</td>
+										<td>{getTimeString(flight.current_arrival_time)}</td>
+										<td>{flightStatuses.join(', ')}</td>
+									</tr>
+								)
+							})}
 						</tbody>
 					</table>
 				)}
