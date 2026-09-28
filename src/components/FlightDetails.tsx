@@ -1,4 +1,5 @@
 import type {Flight} from '../types/flight.d.mts'
+import {FlightCard} from './FlightCard.tsx'
 import {
 	getFlightDurationString,
 	getTimeString,
@@ -27,41 +28,37 @@ const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 			</header>
 
 			<div className='flight-details-body'>
-				<section className='flight-card'>
-					<h3 className='flight-card-header'>Flight Summary</h3>
+				<FlightCard title='Flight Summary'>
+					<p>Airline: {flight.airline}</p>
 
-					<div className='flight-card-content'>
-						<p>Airline: {flight.airline}</p>
+					<p>
+						Departure Time: {getTimeString(flight.current_departure_time)}
+						{flight.flight_status === 'Delayed' && (
+							<span>
+								{' '}
+								(was {getTimeString(flight.scheduled_departure_time)})
+							</span>
+						)}
+					</p>
 
-						<p>
-							Departure Time: {getTimeString(flight.current_departure_time)}
-							{flight.flight_status === 'Delayed' && (
-								<span>
-									{' '}
-									(was {getTimeString(flight.scheduled_departure_time)})
-								</span>
-							)}
-						</p>
+					<p>
+						Arrival Time:{' '}
 
-						<p>
-							Arrival Time:{' '}
+						{flight.flight_status === 'Cancelled'
+							? '-'
+							: getTimeString(flight.current_arrival_time)}
 
-							{flight.flight_status === 'Cancelled'
-								? '-'
-								: getTimeString(flight.current_arrival_time)}
+						{flight.flight_status === 'Delayed' && (
+							<span>
+								{' '}
+								(was {getTimeString(flight.scheduled_arrival_time)})
+							</span>
+						)}
+					</p>
 
-							{flight.flight_status === 'Delayed' && (
-								<span>
-									{' '}
-									(was {getTimeString(flight.scheduled_arrival_time)})
-								</span>
-							)}
-						</p>
-
-						<p>Flight Status: {flight.flight_status}</p>
-						<p>Flight Duration: {getFlightDurationString(flight.flight_duration)}</p>
-					</div>
-				</section>
+					<p>Flight Status: {flight.flight_status}</p>
+					<p>Flight Duration: {getFlightDurationString(flight.flight_duration)}</p>
+				</FlightCard>
 			</div>
 		</div>
 	)
