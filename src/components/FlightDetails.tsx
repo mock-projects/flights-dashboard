@@ -49,6 +49,26 @@ const FlightSummary = ({flight}: {flight: Flight}) => {
 	)
 }
 
+const OriginDetailsCard = ({flight}: {flight: Flight}) => {
+	return (
+		<FlightCard title={'Origin Airport'}>
+			<p>Airport Name: {flight.origin_name}</p>
+			<p>Terminal: {flight.origin_terminal}</p>
+			<p>Gate: {flight.origin_gate}</p>
+		</FlightCard>
+	)
+}
+
+const DestinationDetailsCard = ({flight}: {flight: Flight}) => {
+	return (
+		<FlightCard title={'DestinationAirport'}>
+			<p>Airport Name: {flight.destination_name}</p>
+			<p>Terminal: {flight.destination_terminal}</p>
+			<p>Gate: {flight.destination_gate}</p>
+		</FlightCard>
+	)
+}
+
 const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 	return (
 		<div className='flight-details'>
@@ -68,6 +88,8 @@ const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 
 			<div className='flight-details-body'>
 				<FlightSummary flight={flight} />
+				<OriginDetailsCard flight={flight} />
+				<DestinationDetailsCard flight={flight} />
 			</div>
 		</div>
 	)
