@@ -11,7 +11,7 @@ interface FlightDetailsProps {
 
 const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 	return (
-		<div className='flight-card'>
+		<div className='flight-details'>
 			<nav>
 				<button
 					onClick={onBackClick}
@@ -20,17 +20,19 @@ const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 					Back
 				</button>
 			</nav>
-			<header className='flight-card-header'>
+
+			<header className='flight-details-header'>
 				<h2>Flight {flight.flight_number}</h2>
-				<h2>
-					{flight.origin_code} - {flight.destination_code}
-				</h2>
+				<h2>{flight.origin_code} - {flight.destination_code}</h2>
 			</header>
-			<div className='flight-card-body'>
-				<section className='flight-card-section'>
-					<h3 className='flight-card-section-header'>Flight Summary</h3>
-					<div className='flight-card-section-content'>
+
+			<div className='flight-details-body'>
+				<section className='flight-card'>
+					<h3 className='flight-card-header'>Flight Summary</h3>
+
+					<div className='flight-card-content'>
 						<p>Airline: {flight.airline}</p>
+
 						<p>
 							Departure Time: {getTimeString(flight.current_departure_time)}
 							{flight.flight_status === 'Delayed' && (
@@ -40,11 +42,14 @@ const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 								</span>
 							)}
 						</p>
+
 						<p>
 							Arrival Time:{' '}
+
 							{flight.flight_status === 'Cancelled'
 								? '-'
 								: getTimeString(flight.current_arrival_time)}
+
 							{flight.flight_status === 'Delayed' && (
 								<span>
 									{' '}
@@ -52,10 +57,9 @@ const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 								</span>
 							)}
 						</p>
+
 						<p>Flight Status: {flight.flight_status}</p>
-						<p>
-							Flight Duration: {getFlightDurationString(flight.flight_duration)}
-						</p>
+						<p>Flight Duration: {getFlightDurationString(flight.flight_duration)}</p>
 					</div>
 				</section>
 			</div>
