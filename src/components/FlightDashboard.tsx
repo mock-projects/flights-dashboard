@@ -45,6 +45,8 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 						<tbody>
 							{flights.map((flight) => {
 								const flightStatuses = getFlightStatuses(flight)
+								const classNames = 'status ' + flightStatuses.join(' ')
+								const displayText = flightStatuses.join(', ').replaceAll('-', ' ')
 								return (
 									<tr
 										key={flight.flight_id}
@@ -58,7 +60,9 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 										<td>{flight.destination_gate}</td>
 										<td>{getTimeString(flight.current_departure_time)}</td>
 										<td>{getTimeString(flight.current_arrival_time)}</td>
-										<td>{flightStatuses.join(', ')}</td>
+										<td className={classNames}>
+											{displayText}
+										</td>
 									</tr>
 								)
 							})}

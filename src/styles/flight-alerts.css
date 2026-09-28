@@ -1,1 +1,11 @@
-/* Add visual cues for urgent flight updates to this file */
+.status.gate-changed {
+	color: cornflowerblue;
+}
+
+.status.delayed {
+	color: orange;
+}
+
+.status.cancelled {
+	color: red;
+}
