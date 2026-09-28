@@ -18,10 +18,18 @@
   display: flex;
   flex-direction: column;
   align-self: center;
+  margin-bottom: 2em;
 }
 
 .flight-details-header {
   text-align: center;
+}
+
+.flight-details-body {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 2em;
 }
 
 .flight-card {
