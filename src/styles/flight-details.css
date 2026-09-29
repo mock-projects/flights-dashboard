@@ -38,8 +38,19 @@
   overflow: hidden;
 }
 
+.flight-card-interactive {
+  list-style: none;
+  user-select: none;
+}
+
+.flight-card-indicator {
+  display: inline-block;
+  width: 1em;
+}
+
 .flight-card-header {
-  margin: -1px;
+  margin: 0;
+  margin-bottom: -1px;
   padding: 10px 20px;
   border-bottom: 1px solid black;
   vertical-align: middle;
