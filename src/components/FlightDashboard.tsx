@@ -6,6 +6,7 @@ import {Header} from './Header.tsx'
 import {filterOptions, sortOptions} from '../types/constants.mts'
 import type {FilterOption, SortOption} from '../types/constants.mts'
 import {Dropdown} from './Dropdown.tsx'
+import {useSortedFlights} from '../hooks/useSortedFlights.mts'
 
 interface FlightDashboardProps {
 	setSelectedFlight: (flight: Flight) => void
@@ -15,6 +16,7 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 	const [flights, setFlights] = useState<Flight[ ]>([ ])
 	const [filterSelection, setFilterSelection] = useState<FilterOption>( )
 	const [sortSelection, setSortSelection] = useState<SortOption>( )
+	const sortedFlights = useSortedFlights(flights, filterSelection, sortSelection)
 
 	useEffect(( ) => {
 		const loadFlights = async ( ) => {
@@ -61,7 +63,7 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 			</Header>
 
 			<section className='dashboard-container'>
-				{flights.length > 0 && (
+				{sortedFlights.length > 0 && (
 					<table>
 						<thead>
 							<tr>
@@ -77,7 +79,7 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 							</tr>
 						</thead>
 						<tbody>
-							{flights.map((flight) => {
+							{sortedFlights.map((flight) => {
 								const flightStatuses = getFlightStatuses(flight)
 								const classNames = 'status ' + flightStatuses.join(' ')
 								const displayText = flightStatuses.join(', ').replaceAll('-', ' ')
