@@ -4,12 +4,12 @@ import {
 	getTimeString,
 } from '../utilities/flightUtils.mts'
 
-interface FlightCardProps {
+interface FlightDetailsProps {
 	flight: Flight
 	onBackClick: ( ) => void
 }
 
-const FlightCard = ({flight, onBackClick}: FlightCardProps) => {
+const FlightDetails = ({flight, onBackClick}: FlightDetailsProps) => {
 	return (
 		<div className='flight-card'>
 			<nav>
@@ -63,4 +63,4 @@ const FlightCard = ({flight, onBackClick}: FlightCardProps) => {
 	)
 }
 
-export {FlightCard}
+export {FlightDetails}
