@@ -1,10 +1,10 @@
-import {Fragment, useEffect, useState} from 'react'
+import {Fragment, useCallback, useEffect, useState} from 'react'
 import type {Flight} from '../types/flight.d.mts'
 import {getApiData} from '../utilities/fetchResults.mts'
 import {getFlightStatuses, getTimeString} from '../utilities/flightUtils.mts'
 import {Header} from './Header.tsx'
-import {filterOptions} from '../types/constants.mts'
-import type {FilterOption} from '../types/constants.mts'
+import {filterOptions, sortOptions} from '../types/constants.mts'
+import type {FilterOption, SortOption} from '../types/constants.mts'
 import {Dropdown} from './Dropdown.tsx'
 
 interface FlightDashboardProps {
@@ -13,7 +13,8 @@ interface FlightDashboardProps {
 
 const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 	const [flights, setFlights] = useState<Flight[ ]>([ ])
-	const [filterSelection, setFilterSelection] = useState<FilterOption>()
+	const [filterSelection, setFilterSelection] = useState<FilterOption>( )
+	const [sortSelection, setSortSelection] = useState<SortOption>( )
 
 	useEffect(( ) => {
 		const loadFlights = async ( ) => {
@@ -29,8 +30,15 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 		}
 	}, [filterSelection])
 
+	useEffect(( ) => {
+		if (sortOptions.length > 0 && sortSelection == null) {
+			setSortSelection(sortOptions.at(0))
+		}
+	}, [sortSelection])
+
 	const onHeaderResetClick = useCallback(( ) => {
 		setFilterSelection(undefined)
+		setSortSelection(undefined)
 	}, [ ])
 
 	return (
@@ -43,6 +51,12 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 					options={filterOptions}
 					value={filterSelection}
 					setValue={setFilterSelection}
+				/>
+				<Dropdown
+					label='Sort Flights'
+					options={sortOptions}
+					value={sortSelection}
+					setValue={setSortSelection}
 				/>
 			</Header>
 
