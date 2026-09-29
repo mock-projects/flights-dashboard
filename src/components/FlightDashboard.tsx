@@ -1,6 +1,6 @@
 import {Fragment, useEffect, useState} from 'react'
 import type {Flight} from '../types/flight.d.mts'
-import {fetchFlightResults} from '../utilities/fetchResults.mts'
+import {getApiData} from '../utilities/fetchResults.mts'
 import {getFlightStatuses, getTimeString} from '../utilities/flightUtils.mts'
 import {Header} from './Header.tsx'
 
@@ -14,7 +14,7 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 
 	useEffect(( ) => {
 		const loadFlights = async ( ) => {
-			const flights = await fetchFlightResults( )
+			const flights = await getApiData( )
 			setFlights(flights)
 		}
 		void loadFlights( )
