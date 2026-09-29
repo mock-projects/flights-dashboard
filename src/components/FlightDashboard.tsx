@@ -3,6 +3,9 @@ import type {Flight} from '../types/flight.d.mts'
 import {getApiData} from '../utilities/fetchResults.mts'
 import {getFlightStatuses, getTimeString} from '../utilities/flightUtils.mts'
 import {Header} from './Header.tsx'
+import {filterOptions} from '../types/constants.mts'
+import type {FilterOption} from '../types/constants.mts'
+import {Dropdown} from './Dropdown.tsx'
 
 interface FlightDashboardProps {
 	setSelectedFlight: (flight: Flight) => void
@@ -10,7 +13,7 @@ interface FlightDashboardProps {
 
 const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 	const [flights, setFlights] = useState<Flight[ ]>([ ])
-	const [viewId, setViewId] = useState(0)
+	const [filterSelection, setFilterSelection] = useState<FilterOption>()
 
 	useEffect(( ) => {
 		const loadFlights = async ( ) => {
@@ -20,12 +23,29 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 		void loadFlights( )
 	}, [ ])
 
+	useEffect(( ) => {
+		if (filterOptions.length > 0 && filterSelection == null) {
+			setFilterSelection(filterOptions.at(0))
+		}
+	}, [filterSelection])
+
+	const onHeaderResetClick = useCallback(( ) => {
+		setFilterSelection(undefined)
+	}, [ ])
+
 	return (
 		<Fragment>
 			<Header
-				viewId={viewId}
-				setViewId={setViewId}
-			/>
+				onResetClick={onHeaderResetClick}
+			>
+				<Dropdown
+					label='Filter Flights'
+					options={filterOptions}
+					value={filterSelection}
+					setValue={setFilterSelection}
+				/>
+			</Header>
+
 			<section className='dashboard-container'>
 				{flights.length > 0 && (
 					<table>

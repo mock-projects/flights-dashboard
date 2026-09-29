@@ -1,18 +1,25 @@
-import type {ChangeEvent} from 'react'
+import {getDisplayString} from '../utilities/miscUtils.mts'
+import type {ChangeEvent, Dispatch, SetStateAction} from 'react'
 
-interface DropdownProps {
-	options: string[ ]
+interface DropdownProps<T extends string> {
 	label: string
-	value: number
-	setSelected: (selectedValue: number) => void
+	options: readonly T[ ]
+	value: T | undefined
+	setValue: Dispatch<SetStateAction<T | undefined>>
 }
 
 /**
  * Renders a dropdown component.
  */
-const Dropdown = ({options, label, value, setSelected}: DropdownProps) => {
-	const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setSelected(parseInt(e.target.value))
+const Dropdown = <T extends string,>({
+	label,
+	options,
+	value,
+	setValue,
+}: DropdownProps<T>) => {
+	const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
+		const option = options.find((item) => item === event.target.value)
+		setValue(option)
 	}
 	return (
 		<div className='dropdown'>
@@ -22,12 +29,9 @@ const Dropdown = ({options, label, value, setSelected}: DropdownProps) => {
 				onChange={onChange}
 				className='custom-select'
 			>
-				{options.map((option, index) => (
-					<option
-						key={option}
-						value={index}
-					>
-						{option}
+				{options.map((option) => (
+					<option key={option} value={option}>
+						{getDisplayString(option)}
 					</option>
 				))}
 			</select>

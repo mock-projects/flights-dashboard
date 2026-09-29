@@ -1,5 +1,17 @@
-const AIRPORT_CODE = 'XYZ'
+const AIRPORT_CODE = 'XYZ' as const
 
-const viewOptions: string[ ] = ['Arriving Flights', 'Departing Flights']
+const filterOptions = [
+	'all-flights',
+	'arriving-flights',
+	'departing-flights',
+] as const
 
-export {AIRPORT_CODE, viewOptions}
+type FilterOption = (typeof filterOptions)[number]
+
+export {
+	AIRPORT_CODE,
+	filterOptions,
+}
+export type {
+	FilterOption,
+}
