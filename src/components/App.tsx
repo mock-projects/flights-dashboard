@@ -2,7 +2,7 @@
 
 import {useState} from 'react'
 import type {Flight} from '../types/flight.d.mts'
-import {FlightCard} from './FlightCard.tsx'
+import {FlightDetails} from './FlightDetails.tsx'
 import {FlightDashboard} from './FlightDashboard.tsx'
 
 const App = ( ) => {
@@ -13,7 +13,7 @@ const App = ( ) => {
 			{selectedFlight === null ? (
 				<FlightDashboard setSelectedFlight={setSelectedFlight} />
 			) : (
-				<FlightCard
+				<FlightDetails
 					flight={selectedFlight}
 					onBackClick={( ) => (setSelectedFlight(null))}
 				/>
