@@ -1,7 +1,7 @@
 import {Fragment, useEffect, useState} from 'react'
 import type {Flight} from '../types/flight.d.mts'
-import {fetchFlightResults} from '../utilities/fetchResults.mts'
-import {getTimeString} from '../utilities/flightUtils.mts'
+import {getApiData} from '../utilities/fetchResults.mts'
+import {getFlightStatuses, getTimeString} from '../utilities/flightUtils.mts'
 import {Header} from './Header.tsx'
 
 interface FlightDashboardProps {
@@ -14,7 +14,7 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 
 	useEffect(( ) => {
 		const loadFlights = async ( ) => {
-			const flights = await fetchFlightResults( )
+			const flights = await getApiData( )
 			setFlights(flights)
 		}
 		void loadFlights( )
@@ -35,26 +35,37 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 								<th scope='col'>Airline</th>
 								<th scope='col'>Origin</th>
 								<th scope='col'>Destination</th>
+								<th scope='col'>Origin Gate</th>
+								<th scope='col'>Destination Gate</th>
 								<th scope='col'>Current Departure</th>
 								<th scope='col'>Current Arrival</th>
 								<th scope='col'>Status</th>
 							</tr>
 						</thead>
 						<tbody>
-							{flights.map((flight) => (
-								<tr
-									key={flight.flight_id}
-									onClick={( ) => (setSelectedFlight(flight))}
-								>
-									<td>{flight.flight_number}</td>
-									<td>{flight.airline}</td>
-									<td>{flight.origin_code}</td>
-									<td>{flight.destination_code}</td>
-									<td>{getTimeString(flight.current_departure_time)}</td>
-									<td>{getTimeString(flight.current_arrival_time)}</td>
-									<td>{flight.flight_status}</td>
-								</tr>
-							))}
+							{flights.map((flight) => {
+								const flightStatuses = getFlightStatuses(flight)
+								const classNames = 'status ' + flightStatuses.join(' ')
+								const displayText = flightStatuses.join(', ').replaceAll('-', ' ')
+								return (
+									<tr
+										key={flight.flight_id}
+										onClick={( ) => setSelectedFlight(flight)}
+									>
+										<td>{flight.flight_number}</td>
+										<td>{flight.airline}</td>
+										<td>{flight.origin_code}</td>
+										<td>{flight.destination_code}</td>
+										<td>{flight.origin_gate}</td>
+										<td>{flight.destination_gate}</td>
+										<td>{getTimeString(flight.current_departure_time)}</td>
+										<td>{getTimeString(flight.current_arrival_time)}</td>
+										<td className={classNames}>
+											{displayText}
+										</td>
+									</tr>
+								)
+							})}
 						</tbody>
 					</table>
 				)}
