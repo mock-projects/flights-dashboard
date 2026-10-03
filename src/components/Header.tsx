@@ -1,29 +1,19 @@
-import {viewOptions} from '../types/constants.mts'
-import {Dropdown} from './Dropdown.tsx'
+import type {ReactNode} from 'react'
 
 interface HeaderProps {
-	viewId: number
-	setViewId: (viewId: number) => void
+	onResetClick: ( ) => void
+	children: ReactNode
 }
 
 /**
  * Renders a header element.
  */
-const Header = ({viewId, setViewId}: HeaderProps) => {
-	const onResetClick = ( ) => {
-		setViewId(0)
-	}
-
+const Header = ({onResetClick, children}: HeaderProps) => {
 	return (
 		<header>
 			<h1 className='company-title'>Flight Dashboard</h1>
 			<div className='menu-container'>
-				<Dropdown
-					value={viewId}
-					setSelected={setViewId}
-					label='View'
-					options={viewOptions}
-				/>
+				{children}
 				<button onClick={onResetClick}>Reset</button>
 			</div>
 		</header>

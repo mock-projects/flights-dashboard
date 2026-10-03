@@ -1,8 +1,12 @@
-import {Fragment, useEffect, useState} from 'react'
+import {Fragment, useCallback, useEffect, useState} from 'react'
 import type {Flight} from '../types/flight.d.mts'
 import {getApiData} from '../utilities/fetchResults.mts'
 import {getFlightStatuses, getTimeString} from '../utilities/flightUtils.mts'
 import {Header} from './Header.tsx'
+import {filterOptions, sortOptions} from '../types/constants.mts'
+import type {FilterOption, SortOption} from '../types/constants.mts'
+import {Dropdown} from './Dropdown.tsx'
+import {useSortedFlights} from '../hooks/useSortedFlights.mts'
 
 interface FlightDashboardProps {
 	setSelectedFlight: (flight: Flight) => void
@@ -10,7 +14,9 @@ interface FlightDashboardProps {
 
 const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 	const [flights, setFlights] = useState<Flight[ ]>([ ])
-	const [viewId, setViewId] = useState(0)
+	const [filterSelection, setFilterSelection] = useState<FilterOption>( )
+	const [sortSelection, setSortSelection] = useState<SortOption>( )
+	const sortedFlights = useSortedFlights(flights, filterSelection, sortSelection)
 
 	useEffect(( ) => {
 		const loadFlights = async ( ) => {
@@ -20,14 +26,44 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 		void loadFlights( )
 	}, [ ])
 
+	useEffect(( ) => {
+		if (filterOptions.length > 0 && filterSelection == null) {
+			setFilterSelection(filterOptions.at(0))
+		}
+	}, [filterSelection])
+
+	useEffect(( ) => {
+		if (sortOptions.length > 0 && sortSelection == null) {
+			setSortSelection(sortOptions.at(0))
+		}
+	}, [sortSelection])
+
+	const onHeaderResetClick = useCallback(( ) => {
+		setFilterSelection(undefined)
+		setSortSelection(undefined)
+	}, [ ])
+
 	return (
 		<Fragment>
 			<Header
-				viewId={viewId}
-				setViewId={setViewId}
-			/>
+				onResetClick={onHeaderResetClick}
+			>
+				<Dropdown
+					label='Filter Flights'
+					options={filterOptions}
+					value={filterSelection}
+					setValue={setFilterSelection}
+				/>
+				<Dropdown
+					label='Sort Flights'
+					options={sortOptions}
+					value={sortSelection}
+					setValue={setSortSelection}
+				/>
+			</Header>
+
 			<section className='dashboard-container'>
-				{flights.length > 0 && (
+				{sortedFlights.length > 0 && (
 					<table>
 						<thead>
 							<tr>
@@ -43,7 +79,7 @@ const FlightDashboard = ({setSelectedFlight}: FlightDashboardProps) => {
 							</tr>
 						</thead>
 						<tbody>
-							{flights.map((flight) => {
+							{sortedFlights.map((flight) => {
 								const flightStatuses = getFlightStatuses(flight)
 								const classNames = 'status ' + flightStatuses.join(' ')
 								const displayText = flightStatuses.join(', ').replaceAll('-', ' ')

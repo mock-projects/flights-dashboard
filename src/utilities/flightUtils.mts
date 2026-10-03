@@ -1,15 +1,9 @@
+import type {FlightStatus} from '../types/constants.mts'
 import type {Flight} from '../types/flight.d.mts'
-
-type SystemStatus = (
-	| 'on-time'
-	| 'delayed'
-	| 'cancelled'
-	| 'gate-changed'
-)
 
 const cleanFlightStatus = (
 	flightStatus: string,
-): SystemStatus | null => {
+): FlightStatus | null => {
 	let cleanedStatus: string | null = flightStatus
 	cleanedStatus = cleanedStatus.toLowerCase( )
 
@@ -29,10 +23,10 @@ const getFlightDurationString = (flightDuration: number): string => {
 	return `${hours}h ${minutes}m`
 }
 
-const getFlightStatuses = (flight: Flight): SystemStatus[ ] => {
+const getFlightStatuses = (flight: Flight): FlightStatus[ ] => {
 	const primaryStatus = cleanFlightStatus(flight.flight_status)
 	if (primaryStatus == null) throw 'status is null'
-	const status: SystemStatus[ ] = [primaryStatus]
+	const status: FlightStatus[ ] = [primaryStatus]
 
 	if (flight.gate_changed) {
 		if (primaryStatus === 'on-time') status[0] = 'gate-changed'
