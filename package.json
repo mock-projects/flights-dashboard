@@ -1,6 +1,6 @@
 {
-	"name": "now_boarding-react",
-	"description": "Flights Dash",
+	"name": "flights-dashboard",
+	"description": "A web-based dashboard UI, designed to show airport workers and customers an airport's active flight schedules.",
 	"version": "1.0.0",
 	"contributors": [
 		"Byteboard, Inc.",
